@@ -12,7 +12,6 @@ class DbArticle(Base):
     content = Column(String)
     image = Column(String)
     author_id = Column(Integer, ForeignKey('user.id'))
-    author = relationship('DbUser', back_populates='posted_articles')
 
 
 class DbUser(Base):

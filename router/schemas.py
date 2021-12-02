@@ -6,7 +6,7 @@ class ArticleRequestSchema(BaseModel):
     category: str
     title: str
     content: str
-    image:str
+    image: str
     author_id: int
 
 
