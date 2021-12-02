@@ -21,7 +21,7 @@ class DbUser(Base):
     email = Column(String)
     password = Column(String)
     is_admin = Column(Boolean)
-    posted_articles = relationship('DbArticle', back_populates='author')
+    posted_articles = relationship('DbArticle', back_populates='author_id')
 
 
 
