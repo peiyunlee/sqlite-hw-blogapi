@@ -1,7 +1,7 @@
 from fastapi import HTTPException, status
-from router.schemas import ArticleRequestSchema
+from router.schemas import ArticleRequestSchema, LikeRequestSchema, CommentRequestSchema
 from sqlalchemy.orm.session import Session
-from db.models import DbArticle
+from db.models import DbArticle, DbLike, DbComment
 
 
 def post(db: Session, request: ArticleRequestSchema) -> DbArticle:
@@ -10,7 +10,7 @@ def post(db: Session, request: ArticleRequestSchema) -> DbArticle:
         title=request.title,
         content=request.content,
         image=request.image,
-        author_id=request.author_id,
+        author_id=request.author_id
     )
     db.add(new_article)
     db.commit()
@@ -44,3 +44,27 @@ def get_articles_by_author_id(author_id: int, db: Session):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f'Article with category = {id} not found')
     return article
+
+
+def like(db: Session, request: LikeRequestSchema) -> DbLike:
+    new_like = DbLike(
+        article_id=request.article_id,
+        owner_id=request.owner_id
+    )
+    db.add(new_like)
+    db.commit()
+    db.refresh(new_like)
+    return new_like
+
+
+def comment(db: Session, request: CommentRequestSchema) -> DbComment:
+    new_comment = DbComment(
+        article_id=request.article_id,
+        owner_id=request.owner_id,
+        content=request.content
+    )
+    db.add(new_comment)
+    db.commit()
+    db.refresh(new_comment)
+    return new_comment
+
